@@ -12,7 +12,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\black_scholes.c" />
+    <ClCompile Include="..\contract.c" />
     <ClCompile Include="..\distr.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\lderiv.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{BD24AC1C-AA59-4881-A012-A7EB1ACF4D8C}</ProjectGuid>
@@ -44,14 +48,14 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <TargetExt>.lib</TargetExt>
-    <OutDir>$(ProjectDir)\..</OutDir>
+    <OutDir>$(ProjectDir)\..\</OutDir>
     <IntDir>$(ProjectDir)\..\obj\$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)d</TargetName>
     <IncludePath>$(ProjectDir)\..\..\llib\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <TargetExt>.lib</TargetExt>
-    <OutDir>$(ProjectDir)\..</OutDir>
+    <OutDir>$(ProjectDir)\..\</OutDir>
     <IntDir>$(ProjectDir)\..\obj\$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)r</TargetName>
     <IncludePath>$(ProjectDir)\..\..\llib\include;$(IncludePath)</IncludePath>

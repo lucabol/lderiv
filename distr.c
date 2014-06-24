@@ -5,7 +5,7 @@
 #endif 
 
 // The cumulative normal distribution function 
-static double cnd( double X )
+double cnd( double X )
 {
     double L, K, w ;
 

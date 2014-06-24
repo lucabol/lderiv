@@ -21,5 +21,13 @@
     <ClCompile Include="..\distr.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\contract.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\lderiv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
