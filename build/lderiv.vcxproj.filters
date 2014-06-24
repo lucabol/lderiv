@@ -24,6 +24,9 @@
     <ClCompile Include="..\contract.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\process.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\lderiv.h">

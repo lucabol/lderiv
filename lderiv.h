@@ -6,6 +6,7 @@
 #include "utils.h" // for BEGIN_DECLS
 #include "portable.h" // for inline
 #include "slist.h"
+#include "randstream.h"
 
 BEGIN_DECLS
 
@@ -46,12 +47,24 @@ typedef struct {
 double Contract_Price(Contract* contract, time_t evalTime, double price, double riskFree, double vol);
 double Contract_PortPrice(SList_T portfolio, time_t evalTime, double price, double riskFree, double vol); 
 
-#define DAYSINYEAR 365
+#define DAYSINYEAR 365.0
 #define SECSINYEAR (DAYSINYEAR * 60 * 60 * 8) 
 
 inline double diff_in_years(time_t end, time_t begin) {
    return difftime(end, begin) / SECSINYEAR;
 }
+
+typedef struct {
+    double mean;
+    double vol;
+    double riskFree;
+    double yield;
+    RandStream_T rand;
+} Process_Brownian_Env;
+
+typedef enum { Process_Brownian } Process_Kind;
+
+double Process_NextPrice(double prevPrice, Process_Kind kind, void* env);
 
 END_DECLS
 

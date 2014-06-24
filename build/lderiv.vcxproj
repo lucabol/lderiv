@@ -14,6 +14,7 @@
     <ClCompile Include="..\black_scholes.c" />
     <ClCompile Include="..\contract.c" />
     <ClCompile Include="..\distr.c" />
+    <ClCompile Include="..\process.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\lderiv.h" />

@@ -4,6 +4,7 @@
 #include "mem.h"
 #include "getopt.h"
 #include "log.h"
+#include "stats.h"
 
 #include "lderiv.h"
 
@@ -46,6 +47,32 @@ unsigned contract_portfolio_test() {
     return TEST_SUCCESS;
 }
 
+unsigned process_nextPrice_test() {
+
+    int i, j, iters = 1000, days = 365;
+    double price;
+    RandStream_T rand = RandStream_new();
+    Process_Brownian_Env env = { 0.0, 0.3, 0.0, 0.0, rand };
+    Stats_T stats = Stats_New();
+
+    for(i = 0; i < iters;++i) {
+        price = 100;
+        for(j = 0; j < days; ++j) {
+            price = Process_NextPrice(price, Process_Brownian, &env);
+        }
+        Stats_Add(stats, price);
+    }
+    
+    test_assert(stats->Max > 100);
+    test_assert(stats->Min < 100);
+    test_assert_float(100, 1.96 * stats->StdErr, stats->Average);
+
+    RandStream_free(&rand);
+    Stats_Free(&stats);
+
+    return TEST_SUCCESS;
+}
+
 static int verbosity = 0;
 
 static struct option long_options[] = {
@@ -63,6 +90,7 @@ int main(int argc, char *argv[])
     test_add("Black Scholes", "standard results", bs_test);
     test_add("Contract", "standard results", contract_test);
     test_add("Contract", "portfolio results", contract_portfolio_test);
+    test_add("Process", "Brownian test", process_nextPrice_test);
     test_run_all();
     Mem_print_stats();
 
