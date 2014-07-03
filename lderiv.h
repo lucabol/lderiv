@@ -41,11 +41,14 @@ typedef struct {
 
 typedef struct {
     double Quantity;
+    double CostPerContract;
     Contract* Contract;
 } Position;
 
+typedef enum { Vol_ConstantForAllStrikes, Vol_ConstantByStrike } Contract_VolCalculation;
+
 double Contract_Price(Contract* contract, time_t evalTime, double price, double riskFree, double vol);
-double Contract_PortPrice(SList_T portfolio, time_t evalTime, double price, double riskFree, double vol); 
+double Contract_PortPrice(SList_T portfolio, Contract_VolCalculation volCalc, void* volEnv, time_t evalTime, double price, double riskFree, double vol); 
 
 #define DAYSINYEAR 365.0
 #define SECSINYEAR (DAYSINYEAR * 60 * 60 * 8) 
@@ -59,12 +62,28 @@ typedef struct {
     double vol;
     double riskFree;
     double yield;
-    RandStream_T rand;
 } Process_Brownian_Env;
 
 typedef enum { Process_Brownian } Process_Kind;
 
-double Process_NextPrice(double prevPrice, Process_Kind kind, void* env);
+double Process_NextPrice(double prevPrice, Process_Kind kind, void* env, RandStream_T random);
+
+const char* Contract_ToAtom(Contract* contract);
+
+double* MC_RunSingleT(SList_T port,
+                      Process_Kind procKind,
+                      void* env,
+                      Contract_VolCalculation volCalc,
+                      void* volEnv,
+                      double initialPrice,
+                      time_t evalTime,
+                      double riskFree,
+                      double yield,
+                      double vol,
+                      unsigned iters,
+                      unsigned days);
+
+void MC_Save_Paths(unsigned iters, unsigned days, double* values, FILE* file);
 
 END_DECLS
 

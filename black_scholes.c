@@ -9,7 +9,7 @@ double cnd(double);
 double black_scholesG(char style, double s, double x, double t, double r, double b, double v) {
     double d1, d2;
 
-    assert(v > 0);
+    //assert(v > 0);
     assert(s > 0);
     assert(x > 0);
 

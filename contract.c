@@ -1,6 +1,7 @@
 #include "lderiv.h"
 #include "assert.h"
 #include "mem.h"
+#include "table.h"
 
 double Contract_Price(Contract* contract, time_t evalTime, double price, double riskFree, double vol) {
 
@@ -19,23 +20,33 @@ double Contract_Price(Contract* contract, time_t evalTime, double price, double 
     }
 }
 
-struct envStruct {
+struct applyStruct {
     double total;
     time_t evalTime;
     double price;
     double riskFree;
     double vol;
+    Table_T volTable;
 };
 
 static void cApply(void** x, void* cl) {
     Position* p = (Position*) *x;
-    struct envStruct* e = (struct envStruct*) cl;
+    struct applyStruct* e = (struct applyStruct*) cl;
+    double vol = e->vol;
 
-    e->total += Contract_Price(p->Contract, e->evalTime, e->price, e->riskFree, e->vol) * p->Quantity;
+    if(e->volTable)
+        vol = * (double*) Table_get(e->volTable, p->Contract);
+
+    e->total += Contract_Price(p->Contract, e->evalTime, e->price, e->riskFree, vol) * p->Quantity;
 }
 
-double Contract_PortPrice(SList_T portfolio, time_t evalTime, double price, double riskFree, double vol) {
-    struct envStruct e = { 0.0, evalTime, price, riskFree, vol};
+double Contract_PortPrice(SList_T portfolio, Contract_VolCalculation volCalc, void* volEnv, time_t evalTime, double price, double riskFree, double vol) {
+    struct applyStruct e = { 0.0, evalTime, price, riskFree, vol, NULL};
+
+    if(volCalc == Vol_ConstantByStrike && volEnv) {
+        e.volTable = (Table_T) volEnv;
+    }
+
     SList_map(portfolio, cApply, &e);
     return e.total;
 }
