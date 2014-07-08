@@ -39,7 +39,7 @@ unsigned contract_portfolio_test() {
     Contract c4 = { &u, Contract_Stock, 0, 0};
     Position p4 = {3, 0.1, &c4};
 
-    SList_T port = SList_list(&p1, &p2, &p3, &p4, NULL);
+    SList_T port = SList_list(&p1, &p2, &p3, &p4);
     double value = Contract_PortPrice(port, Vol_ConstantForAllStrikes, NULL, now, 100, 0.01, 0.25); 
 
     test_assert_float(2.7727 * 2 - 0.2 + 3 * 100, 0.01, value);
@@ -98,7 +98,7 @@ static double vol1 = 0.25;
     Position p1 = {q1, bsp1, &c1}; \
     Contract c2 = { &u, Contract_PutOption, strike2, expiry}; \
     Position p2 = {q2, bsp2, &c2}; \
-    SList_T port = SList_list(&p1, &p2, NULL); \
+    SList_T port = SList_list(&p1, &p2); \
     double bsPort = q1 * bs1 + q2 * bs2;
 
 #define POSTLUDE \
